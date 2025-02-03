@@ -27,7 +27,7 @@ st.markdown(
 
     /* Estilo para o texto na parte principal */
     .stMarkdown, .stTextInput, .stTextArea, .stButton, .stExpander {
-        color: black !important;  /* Cor do texto na parte principal */
+        color: white !important;  /* Cor do texto na parte principal */
     }
 
     /* Estilo para o container de upload de arquivos */
