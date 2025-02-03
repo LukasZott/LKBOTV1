@@ -82,23 +82,6 @@ st.markdown(
 # Criar uma opção de seleção para armazenar arquivos
 st.sidebar.subheader("📂 Configuração de Arquivos")
 
-
-# Diretório de upload
-UPLOAD_FOLDER = "uploads"
-if escolha_local == "Escolher Diretório Personalizado" and diretorio_personalizado:
-    UPLOAD_FOLDER = diretorio_personalizado
-
-# Criar diretório caso não exista
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
-# Função para salvar arquivos no diretório escolhido
-def salvar_arquivo(arquivo):
-    caminho_arquivo = os.path.join(UPLOAD_FOLDER, arquivo.name)
-    with open(caminho_arquivo, "wb") as f:
-        f.write(arquivo.getbuffer())
-    return caminho_arquivo
-
 # Interface para upload de arquivos
 st.sidebar.subheader("📤 Upload de Documentos")
 arquivos = st.sidebar.file_uploader(
