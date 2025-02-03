@@ -11,7 +11,7 @@ from PIL import Image
 
 # Configuração inicial da página
 st.set_page_config(
-    page_title="CADE IA",
+    page_title="LBOT V1,
     page_icon="💛",
     layout="wide",
 )
