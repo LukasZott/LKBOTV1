@@ -16,108 +16,46 @@ st.set_page_config(
     layout="wide",
 )
 
-# CSS personalizado para estilizar o balão de upload e o aviso
+# CSS personalizado para estilizar o layout e os títulos
 st.markdown(
     """
     <style>
     /* Estilo para o texto na sidebar */
     .stSidebar .stMarkdown, .stSidebar .stTextInput, .stSidebar .stTextArea, .stSidebar .stButton, .stSidebar .stExpander {
-        color: white !important;  /* Cor do texto na sidebar */
+        color: white !important;
     }
-
-    /* Estilo para o texto na parte principal */
-    .stMarkdown, .stTextInput, .stTextArea, .stButton, .stExpander {
-        color: black !important;  /* Cor do texto na parte principal */
+    
+    /* Deixar os títulos em branco */
+    .stSidebar h2, .stSidebar h3 {
+        color: white !important;
     }
-
+    
     /* Estilo para o container de upload de arquivos */
     .stFileUploader > div > div {
-        background-color: white;  /* Fundo branco */
-        color: black;  /* Texto preto */
+        background-color: white;
+        color: black;
         border-radius: 10px;
         padding: 10px;
-        border: 1px solid #ccc;  /* Borda cinza para destacar */
+        border: 1px solid #ccc;
     }
 
     /* Estilo para o texto dentro do balão de upload */
     .stFileUploader label {
-        color: black !important;  /* Texto preto */
+        color: black !important;
     }
 
     /* Estilo para o botão de upload */
     .stFileUploader button {
-        background-color: #8dc50b;  /* Verde */
-        color: white;  /* Texto branco */
+        background-color: #8dc50b;
+        color: white;
         border-radius: 5px;
         border: none;
         padding: 8px 16px;
-    }
-
-    /* Estilo para o texto de drag and drop */
-    .stFileUploader div[data-testid="stFileUploaderDropzone"] {
-        color: white !important;  /* Texto branco */
-    }
-
-    /* Estilo para o container de avisos (st.warning) */
-    div[data-testid="stNotification"] > div > div {
-        background-color: white !important;  /* Fundo branco */
-        color: black !important;  /* Texto preto */
-        border-radius: 10px !important;
-        padding: 10px !important;
-        border: 1px solid #ccc !important;  /* Borda cinza para destacar */
-    }
-
-    /* Estilo para o ícone de aviso */
-    div[data-testid="stNotification"] > div > div > div:first-child {
-        color: #8dc50b !important;  /* Cor do ícone (verde) */
-    }
-
-    /* Estilo para o subtítulo */
-    .subtitulo {
-        font-size: 16px !important;  /* Tamanho da fonte reduzido */
-        color: black !important;  /* Cor do texto alterada para preto */
-    }
-
-    /* Estilo para o rótulo do campo de entrada na sidebar */
-    .stSidebar label {
-        color: white !important;  /* Cor do texto branco */
-    }
-
-    /* Estilo para o texto na caixa de entrada do chat */
-    .stChatInput input {
-        color: white !important;  /* Cor do texto branco */
-    }
-
-    /* Estilo para o placeholder na caixa de entrada do chat */
-    .stChatInput input::placeholder {
-        color: white !important;  /* Cor do placeholder branco */
-    }
-
-    /* Estilo para o texto na caixa de entrada do chat */
-div.stChatInput textarea {
-    color: white !important;  /* Cor do texto branco */
-}
-
-/* Estilo para o placeholder na caixa de entrada do chat */
-div.stChatInput textarea::placeholder {
-    color: white !important;  /* Cor do placeholder branco */
-    opacity: 1;  /* Garante que o placeholder seja totalmente visível */
-}
-    
-     /* Estilo para o ícone */
-    .stImage > img {
-        filter: drop-shadow(0 0 0 #8dc50b);  /* Aplica a cor #8dc50b ao ícone */
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
-/* Deixar os títulos em branco */
-.stSidebar h2, .stSidebar h3 {
-    color: white !important;
-}
-
 
 # Caminho para o ícone personalizado
 ICON_PATH = "assets/icon_cade.png"
@@ -125,20 +63,19 @@ ICON_PATH = "assets/icon_cade.png"
 # Verificar se o arquivo do ícone existe
 if os.path.exists(ICON_PATH):
     try:
-        # Usar st.columns para posicionar o ícone ao lado do título
         col1, col2 = st.columns([1.5, 4])  # Ajuste as proporções conforme necessário
         with col1:
-            st.image(ICON_PATH, width=10000000)  # Exibe o ícone com largura de 30px
+            st.image(ICON_PATH, width=100)
         with col2:
-            st.title("LKBOT")  # Exibe o título
+            st.title("LKBOT")
     except Exception as e:
         st.error(f"Erro ao carregar o ícone: {e}")
 else:
-    st.title("LKBOT")  # Fallback se o ícone não existir
+    st.title("LKBOT")
 
-# Subtítulo com fonte reduzida e texto preto
+# Subtítulo com fonte reduzida e texto branco
 st.markdown(
-    '<cp class="subtitulo">Pronto para ajudar!</p>',
+    '<p class="subtitulo">Pronto para ajudar!</p>',
     unsafe_allow_html=True
 )
 
@@ -184,7 +121,6 @@ if api_key:
 
     # Botão para limpar o histórico do chat
     if st.sidebar.button("🧹 Limpar Histórico do Chat", key="limpar_historico"):
-        limpar_historico()
         st.sidebar.success("Histórico do chat limpo com sucesso!")
 else:
     st.warning("Por favor, insira sua chave de API para continuar.")
@@ -230,30 +166,20 @@ def gerar_resposta(pergunta):
         return "Nenhum documento carregado para análise."
 
     contexto_pergunta = f"Baseado nos documentos carregados, responda: {pergunta}\n\n"
-    contexto_pergunta += contexto_documentos[:2000]  # Limita o contexto para evitar excesso de tokens
+    contexto_pergunta += contexto_documentos[:2000]
 
     mensagens = [
-        {"role": "system", "content": "Você é uma IA criada para ser um assistente pessoal meu. Responda com precisão minhas perguntas, e ofereça soluções criativas para os problemas que eu lhe apresentar, pode ter personalidade."},
+        {"role": "system", "content": "Você é um assistente inteligente."},
         {"role": "user", "content": contexto_pergunta}
     ]
 
-    tentativas = 3
-    for tentativa in range(tentativas):
-        try:
-            time.sleep(1)
-            resposta = openai.ChatCompletion.create(
-                model="gpt-4o",
-                messages=mensagens,
-                temperature=0.3,
-                max_tokens=800
-            )
-            return resposta["choices"][0]["message"]["content"]
-        except Exception as e:
-            if tentativa < tentativas - 1:
-                time.sleep(2)
-                continue
-            else:
-                return f"Erro ao gerar a resposta: {str(e)}"
+    resposta = openai.ChatCompletion.create(
+        model="gpt-4o",
+        messages=mensagens,
+        temperature=0.3,
+        max_tokens=800
+    )
+    return resposta["choices"][0]["message"]["content"]
 
 # Entrada para perguntas no chat
 user_input = st.chat_input("💬 Sua pergunta:")
