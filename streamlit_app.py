@@ -113,6 +113,12 @@ div.stChatInput textarea::placeholder {
     unsafe_allow_html=True
 )
 
+/* Deixar os títulos em branco */
+.stSidebar h2, .stSidebar h3 {
+    color: white !important;
+}
+
+
 # Caminho para o ícone personalizado
 ICON_PATH = "assets/icon_cade.png"
 
