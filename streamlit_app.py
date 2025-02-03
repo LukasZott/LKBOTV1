@@ -16,6 +16,103 @@ st.set_page_config(
     layout="wide",
 )
 
+# CSS personalizado para estilizar o balão de upload e o aviso
+st.markdown(
+    """
+    <style>
+    /* Estilo para o texto na sidebar */
+    .stSidebar .stMarkdown, .stSidebar .stTextInput, .stSidebar .stTextArea, .stSidebar .stButton, .stSidebar .stExpander {
+        color: white !important;  /* Cor do texto na sidebar */
+    }
+
+    /* Estilo para o texto na parte principal */
+    .stMarkdown, .stTextInput, .stTextArea, .stButton, .stExpander {
+        color: black !important;  /* Cor do texto na parte principal */
+    }
+
+    /* Estilo para o container de upload de arquivos */
+    .stFileUploader > div > div {
+        background-color: white;  /* Fundo branco */
+        color: black;  /* Texto preto */
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;  /* Borda cinza para destacar */
+    }
+
+    /* Estilo para o texto dentro do balão de upload */
+    .stFileUploader label {
+        color: black !important;  /* Texto preto */
+    }
+
+    /* Estilo para o botão de upload */
+    .stFileUploader button {
+        background-color: #8dc50b;  /* Verde */
+        color: white;  /* Texto branco */
+        border-radius: 5px;
+        border: none;
+        padding: 8px 16px;
+    }
+
+    /* Estilo para o texto de drag and drop */
+    .stFileUploader div[data-testid="stFileUploaderDropzone"] {
+        color: black !important;  /* Texto preto */
+    }
+
+    /* Estilo para o container de avisos (st.warning) */
+    div[data-testid="stNotification"] > div > div {
+        background-color: white !important;  /* Fundo branco */
+        color: black !important;  /* Texto preto */
+        border-radius: 10px !important;
+        padding: 10px !important;
+        border: 1px solid #ccc !important;  /* Borda cinza para destacar */
+    }
+
+    /* Estilo para o ícone de aviso */
+    div[data-testid="stNotification"] > div > div > div:first-child {
+        color: #8dc50b !important;  /* Cor do ícone (verde) */
+    }
+
+    /* Estilo para o subtítulo */
+    .subtitulo {
+        font-size: 16px !important;  /* Tamanho da fonte reduzido */
+        color: black !important;  /* Cor do texto alterada para preto */
+    }
+
+    /* Estilo para o rótulo do campo de entrada na sidebar */
+    .stSidebar label {
+        color: white !important;  /* Cor do texto branco */
+    }
+
+    /* Estilo para o texto na caixa de entrada do chat */
+    .stChatInput input {
+        color: white !important;  /* Cor do texto branco */
+    }
+
+    /* Estilo para o placeholder na caixa de entrada do chat */
+    .stChatInput input::placeholder {
+        color: white !important;  /* Cor do placeholder branco */
+    }
+
+    /* Estilo para o texto na caixa de entrada do chat */
+div.stChatInput textarea {
+    color: white !important;  /* Cor do texto branco */
+}
+
+/* Estilo para o placeholder na caixa de entrada do chat */
+div.stChatInput textarea::placeholder {
+    color: white !important;  /* Cor do placeholder branco */
+    opacity: 1;  /* Garante que o placeholder seja totalmente visível */
+}
+    
+     /* Estilo para o ícone */
+    .stImage > img {
+        filter: drop-shadow(0 0 0 #8dc50b);  /* Aplica a cor #8dc50b ao ícone */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Criar uma opção de seleção para armazenar arquivos
 st.sidebar.subheader("📂 Configuração de Arquivos")
 
