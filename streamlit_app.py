@@ -216,7 +216,7 @@ def gerar_resposta(pergunta):
     contexto_pergunta += contexto_documentos[:2000]  # Limita o contexto para evitar excesso de tokens
 
     mensagens = [
-        {"role": "system", "content": "Você é uma IA especializada em Administração Pública."},
+        {"role": "system", "content": "Você é uma IA criada para ser um assistente pessoal meu. Responda com precisão minhas perguntas, e ofereça soluções criativas para os problemas que eu lhe apresentar, pode ter personalidade."},
         {"role": "user", "content": contexto_pergunta}
     ]
 
