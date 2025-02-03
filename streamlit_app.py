@@ -11,26 +11,21 @@ from PIL import Image
 
 # Configuração inicial da página
 st.set_page_config(
-    page_title="LBOT V1",
+    page_title="LKBOT",
     page_icon="⚙️",
     layout="wide",
 )
 
-# CSS personalizado para estilizar o layout e os títulos
+# CSS personalizado para estilizar a interface
 st.markdown(
     """
     <style>
-    /* Estilo para o texto na sidebar */
     .stSidebar .stMarkdown, .stSidebar .stTextInput, .stSidebar .stTextArea, .stSidebar .stButton, .stSidebar .stExpander {
         color: white !important;
     }
-    
-    /* Deixar os títulos em branco */
-    .stSidebar h2, .stSidebar h3 {
-        color: white !important;
+    .stMarkdown, .stTextInput, .stTextArea, .stButton, .stExpander {
+        color: black !important;
     }
-    
-    /* Estilo para o container de upload de arquivos */
     .stFileUploader > div > div {
         background-color: white;
         color: black;
@@ -38,19 +33,32 @@ st.markdown(
         padding: 10px;
         border: 1px solid #ccc;
     }
-
-    /* Estilo para o texto dentro do balão de upload */
     .stFileUploader label {
         color: black !important;
     }
-
-    /* Estilo para o botão de upload */
     .stFileUploader button {
         background-color: #8dc50b;
         color: white;
         border-radius: 5px;
         border: none;
         padding: 8px 16px;
+    }
+    div[data-testid="stFileUploaderDropzone"] {
+        color: white !important;
+    }
+    div[data-testid="stNotification"] > div > div {
+        background-color: white !important;
+        color: black !important;
+        border-radius: 10px !important;
+        padding: 10px !important;
+        border: 1px solid #ccc !important;
+    }
+    .subtitulo {
+        font-size: 16px !important;
+        color: white !important;
+    }
+    .stSidebar h2, .stSidebar h3 {
+        color: white !important;
     }
     </style>
     """,
@@ -63,7 +71,7 @@ ICON_PATH = "assets/icon_cade.png"
 # Verificar se o arquivo do ícone existe
 if os.path.exists(ICON_PATH):
     try:
-        col1, col2 = st.columns([1.5, 4])  # Ajuste as proporções conforme necessário
+        col1, col2 = st.columns([1.5, 4])
         with col1:
             st.image(ICON_PATH, width=100)
         with col2:
@@ -73,14 +81,18 @@ if os.path.exists(ICON_PATH):
 else:
     st.title("LKBOT")
 
-# Subtítulo com fonte reduzida e texto branco
+# Subtítulo
 st.markdown(
     '<p class="subtitulo">Pronto para ajudar!</p>',
     unsafe_allow_html=True
 )
 
-# Criar uma opção de seleção para armazenar arquivos
-st.sidebar.subheader("📂 Configuração de Arquivos")
+# Interface para a chave da OpenAI
+api_key = st.sidebar.text_input("🔑 Chave API OpenAI", type="password", placeholder="Insira sua chave API")
+if not api_key:
+    st.warning("Por favor, insira sua chave de API para continuar.")
+else:
+    openai.api_key = api_key
 
 # Interface para upload de arquivos
 st.sidebar.subheader("📤 Upload de Documentos")
@@ -90,41 +102,23 @@ arquivos = st.sidebar.file_uploader(
     accept_multiple_files=True
 )
 
-api_key = st.sidebar.text_input("🔑 Chave API OpenAI", type="password", placeholder="Insira sua chave API")
-if api_key:
-    openai.api_key = api_key
-
-    # Botão para limpar o histórico do chat
-    if st.sidebar.button("🧹 Limpar Histórico do Chat", key="limpar_historico"):
-        st.sidebar.success("Histórico do chat limpo com sucesso!")
-else:
-    st.warning("Por favor, insira sua chave de API para continuar.")
-
-# Processar e armazenar os arquivos carregados
-documentos_carregados = []
-if arquivos:
-    for arquivo in arquivos:
-        caminho = salvar_arquivo(arquivo)
-        documentos_carregados.append(caminho)
-    st.sidebar.success(f"Arquivos armazenados em: {UPLOAD_FOLDER}")
-
-# Função para processar os arquivos armazenados
-def processar_arquivos():
+# Processar arquivos carregados
+def processar_arquivos(arquivos):
     contexto = ""
     
-    for caminho in documentos_carregados:
-        if caminho.endswith(".pdf"):
-            with pdfplumber.open(caminho) as pdf:
+    for arquivo in arquivos:
+        if arquivo.name.endswith(".pdf"):
+            with pdfplumber.open(arquivo) as pdf:
                 for page in pdf.pages:
                     contexto += page.extract_text() + "\n"
-        elif caminho.endswith(".csv"):
-            df = pd.read_csv(caminho)
+        elif arquivo.name.endswith(".csv"):
+            df = pd.read_csv(arquivo)
             contexto += df.to_string() + "\n"
-        elif caminho.endswith(".xlsx"):
-            df = pd.read_excel(caminho)
+        elif arquivo.name.endswith(".xlsx"):
+            df = pd.read_excel(arquivo)
             contexto += df.to_string() + "\n"
-        elif caminho.endswith(".pptx"):
-            prs = pptx.Presentation(caminho)
+        elif arquivo.name.endswith(".pptx"):
+            prs = pptx.Presentation(arquivo)
             for slide in prs.slides:
                 for shape in slide.shapes:
                     if hasattr(shape, "text"):
@@ -133,7 +127,7 @@ def processar_arquivos():
     return contexto
 
 # Processa os arquivos e adiciona ao contexto
-contexto_documentos = processar_arquivos()
+contexto_documentos = processar_arquivos(arquivos) if arquivos else ""
 
 # Função para gerar resposta usando GPT-4o
 def gerar_resposta(pergunta):
@@ -141,20 +135,30 @@ def gerar_resposta(pergunta):
         return "Nenhum documento carregado para análise."
 
     contexto_pergunta = f"Baseado nos documentos carregados, responda: {pergunta}\n\n"
-    contexto_pergunta += contexto_documentos[:2000]
+    contexto_pergunta += contexto_documentos[:2000]  # Limita o contexto para evitar excesso de tokens
 
     mensagens = [
-        {"role": "system", "content": "Você é um assistente inteligente."},
+        {"role": "system", "content": "Você é uma IA criada para ser um assistente pessoal. Responda com precisão e criatividade."},
         {"role": "user", "content": contexto_pergunta}
     ]
 
-    resposta = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages=mensagens,
-        temperature=0.3,
-        max_tokens=800
-    )
-    return resposta["choices"][0]["message"]["content"]
+    tentativas = 3
+    for tentativa in range(tentativas):
+        try:
+            time.sleep(1)
+            resposta = openai.ChatCompletion.create(
+                model="gpt-4o",
+                messages=mensagens,
+                temperature=0.3,
+                max_tokens=800
+            )
+            return resposta["choices"][0]["message"]["content"]
+        except Exception as e:
+            if tentativa < tentativas - 1:
+                time.sleep(2)
+                continue
+            else:
+                return f"Erro ao gerar a resposta: {str(e)}"
 
 # Entrada para perguntas no chat
 user_input = st.chat_input("💬 Sua pergunta:")
