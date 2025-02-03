@@ -113,6 +113,8 @@ div.stChatInput textarea::placeholder {
     unsafe_allow_html=True
 )
 
+# Caminho para o ícone personalizado
+ICON_PATH = "assets/icon_cade.png"
 
 # Verificar se o arquivo do ícone existe
 if os.path.exists(ICON_PATH):
