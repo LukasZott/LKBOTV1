@@ -12,7 +12,7 @@ from PIL import Image
 # Configuração inicial da página
 st.set_page_config(
     page_title="LBOT V1",
-    page_icon="💛",
+    page_icon="⚙️",
     layout="wide",
 )
 
