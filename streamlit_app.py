@@ -55,7 +55,7 @@ st.markdown(
 
     /* Estilo para o texto de drag and drop */
     .stFileUploader div[data-testid="stFileUploaderDropzone"] {
-        color: black !important;  /* Texto preto */
+        color: white !important;  /* Texto branco */
     }
 
     /* Estilo para o container de avisos (st.warning) */
@@ -132,7 +132,7 @@ else:
 
 # Subtítulo com fonte reduzida e texto preto
 st.markdown(
-    '<cp class="subtitulo">Pronto para ajudar!.</p>',
+    '<cp class="subtitulo">Pronto para ajudar!</p>',
     unsafe_allow_html=True
 )
 
