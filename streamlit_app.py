@@ -172,6 +172,17 @@ arquivos = st.sidebar.file_uploader(
     accept_multiple_files=True
 )
 
+api_key = st.sidebar.text_input("🔑 Chave API OpenAI", type="password", placeholder="Insira sua chave API")
+if api_key:
+    openai.api_key = api_key
+
+    # Botão para limpar o histórico do chat
+    if st.sidebar.button("🧹 Limpar Histórico do Chat", key="limpar_historico"):
+        limpar_historico()
+        st.sidebar.success("Histórico do chat limpo com sucesso!")
+else:
+    st.warning("Por favor, insira sua chave de API para continuar.")
+
 # Processar e armazenar os arquivos carregados
 documentos_carregados = []
 if arquivos:
@@ -242,4 +253,4 @@ def gerar_resposta(pergunta):
 user_input = st.chat_input("💬 Sua pergunta:")
 if user_input and user_input.strip():
     resposta = gerar_resposta(user_input)
-    st.write(f"**CADE IA:** {resposta}")
+    st.write(f"**LKBOT:** {resposta}")
