@@ -82,14 +82,6 @@ st.markdown(
 # Criar uma opção de seleção para armazenar arquivos
 st.sidebar.subheader("📂 Configuração de Arquivos")
 
-# Opções de local para armazenar os arquivos
-opcoes_local = ["Pasta Padrão (uploads/)", "Escolher Diretório Personalizado"]
-escolha_local = st.sidebar.selectbox("Escolha onde armazenar os arquivos:", opcoes_local)
-
-# Campo de entrada para definir um diretório personalizado
-diretorio_personalizado = None
-if escolha_local == "Escolher Diretório Personalizado":
-    diretorio_personalizado = st.sidebar.text_input("📁 Digite o caminho do diretório:")
 
 # Diretório de upload
 UPLOAD_FOLDER = "uploads"
