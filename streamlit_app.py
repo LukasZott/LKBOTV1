@@ -113,6 +113,12 @@ div.stChatInput textarea::placeholder {
     unsafe_allow_html=True
 )
 
+# Subtítulo com fonte reduzida e texto preto
+st.markdown(
+    '<cp class="subtitulo">Pronto para ajudar".</p>',
+    unsafe_allow_html=True
+)
+
 # Criar uma opção de seleção para armazenar arquivos
 st.sidebar.subheader("📂 Configuração de Arquivos")
 
