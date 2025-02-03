@@ -113,9 +113,24 @@ div.stChatInput textarea::placeholder {
     unsafe_allow_html=True
 )
 
+
+# Verificar se o arquivo do ícone existe
+if os.path.exists(ICON_PATH):
+    try:
+        # Usar st.columns para posicionar o ícone ao lado do título
+        col1, col2 = st.columns([1.5, 4])  # Ajuste as proporções conforme necessário
+        with col1:
+            st.image(ICON_PATH, width=10000000)  # Exibe o ícone com largura de 30px
+        with col2:
+            st.title("LKBOT")  # Exibe o título
+    except Exception as e:
+        st.error(f"Erro ao carregar o ícone: {e}")
+else:
+    st.title("LKBOT")  # Fallback se o ícone não existir
+
 # Subtítulo com fonte reduzida e texto preto
 st.markdown(
-    '<cp class="subtitulo">Pronto para ajudar".</p>',
+    '<cp class="subtitulo">Pronto para ajudar!.</p>',
     unsafe_allow_html=True
 )
 
